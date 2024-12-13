@@ -108,7 +108,10 @@ dependencies = [
  "env_logger",
  "log",
  "once_cell",
+ "rand",
  "serde",
+ "serde_json",
+ "sha2",
  "sqlx",
 ]
 

@@ -36,7 +36,7 @@ pub fn initialize() {
 }
 
 
-fn get_pool() -> &'static Pool<Postgres> {
+pub fn get_pool() -> &'static Pool<Postgres> {
     DB_POOL.get().expect("Database pool is not initialized")
 }
 
