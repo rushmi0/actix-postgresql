@@ -1,27 +1,32 @@
+use log::error;
 use crate::model::Event;
 use crate::storage::get_pool;
 use crate::storage::statement::stored_service::StoredService;
 use sqlx::Row;
+use sqlx::types::Json;
 
 pub struct StoredServiceImpl;
 
 impl StoredService for StoredServiceImpl {
 
     async fn save(&self, event: Event) -> bool {
-        let query = "INSERT INTO events (id, timestamp, kind, tags) VALUES ($1, $2, $3, $4)";
-        let tags_json = serde_json::to_string(&event.tags).unwrap();
+        let query = "INSERT INTO event (id, timestamp, kind, tags) VALUES ($1, $2, $3, $4)";
         match sqlx::query(query)
             .bind(&event.id)
             .bind(event.timestamp as i64)
             .bind(event.kind as i32)
-            .bind(tags_json)
+            .bind(Json(&event.tags))
             .execute(get_pool())
             .await
         {
             Ok(_) => true,
-            Err(_) => false,
+            Err(e) => {
+                error!("Failed to save event: {:?}", e);
+                false
+            },
         }
     }
+
 
     async fn delete(&self, event: Event) -> bool {
         let query = "DELETE FROM events WHERE id = $1";
@@ -46,4 +51,5 @@ impl StoredService for StoredServiceImpl {
             tags: serde_json::from_str(&row.get::<String, _>("tags")).unwrap(),
         }
     }
+
 }

@@ -30,4 +30,5 @@ pub trait StoredService {
     /// # Returns
     /// - The event with the given ID, if found.
     async fn select(&self, id: String) -> Event;
+
 }

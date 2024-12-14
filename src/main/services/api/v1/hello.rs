@@ -10,7 +10,7 @@ struct Greeting {
 }
 
 #[get("/{name}")]
-pub async fn hello_service(name: web::Path<String>) -> impl Responder {
+async fn hello_service(name: web::Path<String>) -> impl Responder {
     let greeting_message: String = greet(&name).await;
     let created_at = SystemTime::now()
         .duration_since(UNIX_EPOCH)
