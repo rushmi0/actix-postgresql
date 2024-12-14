@@ -5,8 +5,12 @@ use sqlx::postgres::PgPoolOptions;
 use sqlx::{Pool, Postgres};
 use std::env;
 use std::time::Duration;
+use lazy_static::lazy_static;
 
-static DB_POOL: OnceCell<Pool<Postgres>> = OnceCell::new();
+
+lazy_static! {
+    static ref DB_POOL: OnceCell<Pool<Postgres>> = OnceCell::new();
+}
 
 pub fn initialize() {
     dotenv().ok();
@@ -23,7 +27,7 @@ pub fn initialize() {
     match PgPoolOptions::new()
         .max_connections(32)
         .min_connections(16)
-        .max_lifetime(Duration::from_secs(2_000_000))
+        .max_lifetime(Duration::from_secs(20_000))
         .idle_timeout(Duration::from_secs(6_000))
         .connect_lazy(&db_url)
     {

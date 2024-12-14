@@ -10,12 +10,13 @@ async fn save_service(
 ) -> impl Responder {
     let event = event.into_inner();
     info!("{:?}", &event);
+
     match service.save(event).await {
-        true => HttpResponse::Ok().body("Event saved successfully."),
-        false => HttpResponse::InternalServerError().body("Failed to save event."),
+        Some(true) => HttpResponse::Ok().body("Event saved successfully."),
+        Some(false) => HttpResponse::BadRequest().body("Failed to save event (possibly a duplicate)."),
+        None => HttpResponse::InternalServerError().body("Unexpected error while saving event."),
     }
 }
-
 
 /*
 #[post("/save")]
