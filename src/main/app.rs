@@ -1,6 +1,7 @@
 use actix_cors::Cors;
 use actix_web::middleware::Logger;
-use actix_web::{http, web, App, HttpServer};
+use actix_web::web::Data;
+use actix_web::{http, App, HttpServer};
 use env_logger::{init_from_env, Env};
 
 use crate::services::api::v1;
@@ -12,7 +13,7 @@ pub async fn run() -> std::io::Result<()> {
     initialize();
     HttpServer::new(move || {
         App::new()
-            .app_data(web::Data::new(StoredServiceImpl))
+            .app_data(Data::new(StoredServiceImpl))
             .wrap(Logger::default())
             .wrap(Logger::new("%a %{User-Agent}i"))
             .wrap(cors_config())
