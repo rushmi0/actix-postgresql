@@ -18,7 +18,7 @@ POST http://localhost:8080/api/v1/save
 Content-Type: application/json
 
 {
-  "id": "0400005b0fc51e70b66db99ba1708b1a1b008c30db35d19d35146b3e09756029",
+  "id": "0200005b0fc51e70b66db99ba1708b1a1b008c30db35d19d35146b3e09756029",
   "timestamp": 1734144707,
   "kind": 0,
   "tags": [
